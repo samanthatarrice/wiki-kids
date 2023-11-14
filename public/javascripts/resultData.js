@@ -1,8 +1,10 @@
 // Retrieve the selected entry content
 const retrieveEntry = async (resultTitle) => {
   const wikiEntryString = getWikiEntryString(resultTitle);
-  const content = getWikiEntryContent(wikiEntryString);
-  return content
+  const htmlString = await getWikiEntryHtml(wikiEntryString);
+  const paragraphsArray = parseWikiParagraphs(htmlString);
+  console.log(paragraphsArray)
+  return htmlString;
 };
 
 const getWikiEntryString = (resultTitle) => {
@@ -15,13 +17,31 @@ const getWikiEntryString = (resultTitle) => {
     });
 };
 
-const getWikiEntryContent = async (url) => {
+const getWikiEntryHtml = async (url) => {
   try {
-      const req = await fetch(url);
-      const json = await req.json();
-      console.log(json)
-      return json.parse.text['*']
+    const req = await fetch(url);
+    const json = await req.json();
+
+    if (json.parse && json.parse.text) {
+      const htmlString = json.parse.text['*'];
+      return htmlString;
+    } else {
+      console.error('Invalid JSON structure:', json);
+    }
   } catch (e) {
-      console.error(e);
+    console.error(e);
   }
+};
+
+const parseWikiParagraphs = (htmlString) => {
+  // Convert html into object:
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, 'text/html');
+  // Find all <p> elements and push them into an array:
+  const paragraphs = doc.querySelectorAll('p');
+  const paragraphsArray = [];
+  for (const paragraph of paragraphs) {
+    paragraphsArray.push(paragraph.textContent);
+  }
+  return paragraphsArray;
 };

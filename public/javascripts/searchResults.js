@@ -100,13 +100,11 @@ const handleSelectResult = (e) => {
   const resultTitle = selectedResult.querySelector('.result-title a').textContent;
   if (selectedResult) {
     const resultId = selectedResult.dataset.resultId;
-    displaySelectedEntry(resultId, resultTitle);
+    displaySelectedEntry(resultTitle);
   }
 };
 
-const displaySelectedEntry = async (resultId, resultTitle) => {
-  console.log('resultId:', resultId);
-  console.log('resultTitle:', resultTitle);
+const displaySelectedEntry = async (resultTitle) => {
   const selectedEntryContent = await retrieveEntry(resultTitle);
   const selectedEntryContainer = document.querySelector('#selectedResult');
   selectedEntryContainer.innerHTML = selectedEntryContent;
