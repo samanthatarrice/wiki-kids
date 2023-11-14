@@ -1,9 +1,22 @@
 // Retrieve the selected entry content
+// const retrieveEntry = async (resultTitle) => {
+//   const wikiEntryString = getWikiEntryString(resultTitle);
+//   const htmlString = await getWikiEntryHtml(wikiEntryString);
+//   const paragraphsArray = parseWikiParagraphs(htmlString);
+//   console.log(paragraphsArray)
+//   const botResponse = await getBotResponse(paragraphsArray)
+//   console.log(botResponse)
+//   return htmlString;
+// };
 const retrieveEntry = async (resultTitle) => {
   const wikiEntryString = getWikiEntryString(resultTitle);
   const htmlString = await getWikiEntryHtml(wikiEntryString);
   const paragraphsArray = parseWikiParagraphs(htmlString);
-  console.log(paragraphsArray)
+  console.log(paragraphsArray);
+
+  const joinedParagraphs = paragraphsArray.join(' '); // Convert array to a single string
+  const botResponse = await retrieveBotResponse(joinedParagraphs); // Assuming this function handles the backend request
+  console.log(botResponse)
   return htmlString;
 };
 
