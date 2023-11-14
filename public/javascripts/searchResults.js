@@ -106,6 +106,7 @@ const handleSelectResult = (e) => {
 
 const displaySelectedEntry = async (resultTitle) => {
   const selectedEntryContent = await retrieveEntry(resultTitle);
+  const cleanedHTML = selectedEntryContent.replace(/^```|```$/g, '');
   const selectedEntryContainer = document.querySelector('#selectedResult');
-  selectedEntryContainer.innerHTML = selectedEntryContent;
+  selectedEntryContainer.innerHTML = cleanedHTML;
 };
