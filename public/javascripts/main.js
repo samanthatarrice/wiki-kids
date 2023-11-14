@@ -29,5 +29,3 @@ const processSearch = async () => {
   if (resultArray.length) buildSearchResults(resultArray)
   setStatsLine(resultArray.length)
 }
-
-// ----

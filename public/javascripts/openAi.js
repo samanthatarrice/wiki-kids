@@ -20,14 +20,14 @@
 //   }
 // };
 
-const retrieveBotResponse = async (wikiArray, resultTitle) => {
+const retrieveBotResponse = async (wikiArray, resultTitle, readingLevel) => {
   try {
     const response = await fetch('http://localhost:3000/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ wikiArray, resultTitle }),
+      body: JSON.stringify({ wikiArray, resultTitle, readingLevel }),
     });
 
     if (!response.ok) {

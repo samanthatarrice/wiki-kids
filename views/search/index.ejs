@@ -1,45 +1,44 @@
 <% layout('layouts/boilerplate') %>
-<h1>Search Index</h1>
+<h1>WikiKids Search</h1>
 
-<section class="search-options d-flex justify-space-between gap-5">
+<section class="search-options d-flex justify-space-between gap-5 my-4">
   <form id="searchBar" class="search-bar d-flex w-50" role="search">
     <label for="search" hidden>Enter a search term or phrase</label>
     <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" role="searchbox">
     <button id="searchBtn" class="search-btn btn btn-outline-success" type="submit">Search</button>
   </form>
-  <select class="form-select w-50" aria-label="Default select example">
+  <select id="readingLevel" class="form-select w-50" aria-label="Default select example">
     <option selected>Reading Level</option>
     <option value="1">1</option>
     <option value="2">2</option>
-    <option value="3">3-4</option>
-    <option value="3">6</option>
-    <option value="3">8</option>
-    <option value="3">11</option>
-    <option value="3">11</option>
-    <option value="3">12</option>
-    <option value="3">14</option>
-    <option value="3">16</option>
-    <option value="3">16-18</option>
-    <option value="3">20-24</option>
-    <option value="3">28-30</option>
-    <option value="3">34-38</option>
-    <option value="3">40</option>
-    <option value="3">40-50</option>
-    <option value="3">60</option>
-    <option value="3">70</option>
+    <option value="3-4">3-4</option>
+    <option value="6">6</option>
+    <option value="8">8</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="14">14</option>
+    <option value="16">16</option>
+    <option value="16-18">16-18</option>
+    <option value="20-24">20-24</option>
+    <option value="28-30">28-30</option>
+    <option value="34-38">34-38</option>
+    <option value="40">40</option>
+    <option value="40-50">40-50</option>
+    <option value="60">60</option>
+    <option value="70">70</option>
   </select>
 </section>
 
-<section class="results d-flex justify-space-evenly">
+<section class="results d-flex justify-space-evenly gap-5">
   <div class="search-results-container flex-fill w-25">
-    <h2>Search Results</h2>
+    <h2 class="fw-bold mb-5">Search Results</h2>
     <div id="statsBar" class="stats-bar">
       <div id="stats" class="stats" aria-live="assertive"></div>
     </div>
     <div id="searchResults" class="search-results"></div>
   </div>
   <div class="selected-result-container flex-fill w-75">
-    <h2>Selected Result</h2>
+    <h2 class="fw-bold mb-5">Selected Result</h2>
     <div id="selectedResult" class="selected-result"></div>
   </div>
 </section>

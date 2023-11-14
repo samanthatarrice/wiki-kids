@@ -1,3 +1,8 @@
+const getReadingLevel = () => {
+  const readingLevel = document.querySelector('#readingLevel').value;
+  return readingLevel
+}
+
 const retrieveEntry = async (resultTitle) => {
   const wikiEntryString = getWikiEntryString(resultTitle);
   const htmlString = await getWikiEntryHtml(wikiEntryString);
@@ -8,7 +13,8 @@ const retrieveEntry = async (resultTitle) => {
   // const joinedParagraphs = paragraphsArray.join(' ');
   // const botResponse = await retrieveBotResponse(joinedParagraphs);
   // console.log('botResponse:', botResponse.choices[0].message.content);
-  const botResponse = await retrieveBotResponse(wikiArray, resultTitle)
+  const readingLevel = getReadingLevel()
+  const botResponse = await retrieveBotResponse(wikiArray, resultTitle, readingLevel);
   console.log('botResponse', botResponse.choices[0].message.content)
   console.log('--------------------------------------------------------')
   // return htmlString;
