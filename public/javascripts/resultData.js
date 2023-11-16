@@ -109,5 +109,6 @@ const parseWikiHtml = (htmlString) => {
   });
 
   console.log('wikiArray:', wikiArray);
-  return JSON.stringify(wikiArray);
+  console.log(typeof wikiArray)
+  return wikiArray;
 };

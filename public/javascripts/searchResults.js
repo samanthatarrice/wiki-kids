@@ -104,9 +104,34 @@ const handleSelectResult = (e) => {
   }
 };
 
+// const displaySelectedEntry = async (resultTitle) => {
+//   const selectedEntryContent = await retrieveEntry(resultTitle);
+//   const cleanedHTML = selectedEntryContent.replace(/^```|```$/g, '');
+//   const selectedEntryContainer = document.querySelector('#selectedResult');
+//   selectedEntryContainer.innerHTML = cleanedHTML;
+// };
+
 const displaySelectedEntry = async (resultTitle) => {
-  const selectedEntryContent = await retrieveEntry(resultTitle);
-  const cleanedHTML = selectedEntryContent.replace(/^```|```$/g, '');
-  const selectedEntryContainer = document.querySelector('#selectedResult');
-  selectedEntryContainer.innerHTML = cleanedHTML;
+  const wikiArray = await retrieveWikiArray(resultTitle);
+
+  for (const section of wikiArray) {
+    console.log(section)
+    const openaiResponse = await retrieveBotResponse(
+      section,
+      resultTitle,
+      getReadingLevel(),
+    );
+    if (openaiResponse) {
+      renderSection(openaiResponse);
+    } else {
+      // Handle error or notify the user that there was an issue fetching the section
+      console.error('Error fetching section:', section);
+    }
+  }
+};
+
+const retrieveWikiArray = async (resultTitle) => {
+  const wikiEntryString = getWikiEntryString(resultTitle);
+  const htmlString = await getWikiEntryHtml(wikiEntryString);
+  return parseWikiHtml(htmlString);
 };
