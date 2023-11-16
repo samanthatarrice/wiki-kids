@@ -6,18 +6,8 @@ const getReadingLevel = () => {
 const retrieveEntry = async (resultTitle) => {
   const wikiEntryString = getWikiEntryString(resultTitle);
   const htmlString = await getWikiEntryHtml(wikiEntryString);
-  // console.log(parseWikiHtml(htmlString));
-  // const paragraphsArray = parseWikiParagraphs(htmlString);
   const wikiArray = parseWikiHtml(htmlString)
-
-  // const joinedParagraphs = paragraphsArray.join(' ');
-  // const botResponse = await retrieveBotResponse(joinedParagraphs);
-  // console.log('botResponse:', botResponse.choices[0].message.content);
-  const readingLevel = getReadingLevel()
-  const botResponse = await retrieveBotResponse(wikiArray, resultTitle, readingLevel);
-  console.log('botResponse', botResponse.choices[0].message.content)
-  console.log('--------------------------------------------------------')
-  // return htmlString;
+  const botResponse = await retrieveBotResponse(wikiArray, resultTitle, getReadingLevel());
   return botResponse.choices[0].message.content;
 };
 
@@ -51,8 +41,6 @@ const parseWikiParagraphs = (htmlString) => {
   // Convert html into object:
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, 'text/html');
-  console.log(doc);
-  // Find all <p> elements and push them into an array:
   const paragraphs = doc.querySelectorAll('p');
   const paragraphsArray = [];
   for (const paragraph of paragraphs) {
@@ -60,67 +48,6 @@ const parseWikiParagraphs = (htmlString) => {
   }
   return paragraphsArray;
 };
-
-// const parseWikiHtml = (htmlString) => {
-//   const parser = new DOMParser();
-//   const doc = parser.parseFromString(htmlString, 'text/html');
-//   const wikiArray = [{ subtitle: 'Summary', text: [] }];
-
-//   // Flag to track when to stop pushing 'p' elements
-//   let stopPushing = false;
-
-//   // Find all 'p' elements
-//   const pElements = doc.querySelectorAll('p');
-
-//   pElements.forEach((pElement) => {
-//     // Check if the stopPushing flag is set
-//     if (stopPushing) {
-//       return;
-//     }
-
-//     // Check if there is a previousElementSibling and if it is an 'h2'
-//     const prevElement = pElement.previousElementSibling;
-//     if (prevElement && prevElement.tagName.toLowerCase() === 'h2') {
-//       // Set the flag to stop pushing once an 'h2' is encountered
-//       stopPushing = true;
-//       return;
-//     }
-
-//     // Push 'pElement.textContent.trim()' into the text array of the first object
-//     wikiArray[0].text.push(pElement.textContent.trim());
-//   });
-
-//   // Find all 'h2' elements
-//   const h2Elements = doc.querySelectorAll('h2');
-
-//   h2Elements.forEach((h2Element) => {
-//     // Find the first span child of the current h2 element
-//     const firstSpan = h2Element.querySelector('span');
-
-//     // Create an object for each 'h2' element
-//     const section = {
-//       subtitle: firstSpan
-//         ? firstSpan.textContent.trim()
-//         : h2Element.textContent.trim(),
-//       text: [],
-//     };
-
-//     // Find all 'p' elements that come after the current 'h2' element
-//     let nextElement = h2Element.nextElementSibling;
-//     while (nextElement && nextElement.tagName.toLowerCase() !== 'h2') {
-//       if (nextElement.tagName.toLowerCase() === 'p') {
-//         section.text.push(nextElement.textContent.trim());
-//       }
-//       nextElement = nextElement.nextElementSibling;
-//     }
-
-//     // Push the section object into the wikiArray
-//     wikiArray.push(section);
-//   });
-
-//   return JSON.stringify(wikiArray);
-// };
-
 
 const parseWikiHtml = (htmlString) => {
   const parser = new DOMParser();
@@ -130,11 +57,9 @@ const parseWikiHtml = (htmlString) => {
   // Flag to track when to stop pushing 'p' elements
   let stopPushing = false;
 
-  // Find all 'p' elements
   const pElements = doc.querySelectorAll('p');
 
   pElements.forEach((pElement) => {
-    // Check if the stopPushing flag is set
     if (stopPushing) {
       return;
     }
@@ -142,20 +67,16 @@ const parseWikiHtml = (htmlString) => {
     // Check if there is a previousElementSibling and if it is an 'h2'
     const prevElement = pElement.previousElementSibling;
     if (prevElement && prevElement.tagName.toLowerCase() === 'h2') {
-      // Set the flag to stop pushing once an 'h2' is encountered
       stopPushing = true;
       return;
     }
 
-    // Push 'pElement.textContent.trim()' into the text array of the first object
     wikiArray[0].text.push(pElement.textContent.trim());
   });
 
-  // Find all 'h2' elements
   const h2Elements = doc.querySelectorAll('h2');
 
   h2Elements.forEach((h2Element) => {
-    // Find the first span child of the current h2 element
     const firstSpan = h2Element.querySelector('span');
 
     // Exclude subtitles like 'See Also', 'Notes', and 'References'
@@ -168,16 +89,14 @@ const parseWikiHtml = (htmlString) => {
       subtitle.includes('Notes') ||
       subtitle.includes('References')
     ) {
-      return; // Skip creating an object for unwanted subtitles
+      return;
     }
 
-    // Create an object for each 'h2' element
     const section = {
       subtitle: subtitle,
       text: [],
     };
 
-    // Find all 'p' elements that come after the current 'h2' element
     let nextElement = h2Element.nextElementSibling;
     while (nextElement && nextElement.tagName.toLowerCase() !== 'h2') {
       if (nextElement.tagName.toLowerCase() === 'p') {
@@ -186,7 +105,6 @@ const parseWikiHtml = (htmlString) => {
       nextElement = nextElement.nextElementSibling;
     }
 
-    // Push the section object into the wikiArray
     wikiArray.push(section);
   });
 

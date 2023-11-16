@@ -11,7 +11,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const gptModel = 'gpt-4-1106-preview';
+const gptModel = 'gpt-3.5-turbo-1106';
 
 const test = async () => {
   const chatCompletion = await openai.chat.completions.create({
